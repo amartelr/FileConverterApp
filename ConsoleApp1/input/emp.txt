@@ -1,0 +1,3 @@
+00001Producto A          1234567A01
+00002Producto B Largo    9876543A02
+00003Prod C                50000B01

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+
+<ItemGroup>
+  <Content Include="cfg\**\*">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
+<Target Name="CreateAppDirectories" AfterTargets="Build">
+    <MakeDir Directories="$(OutputPath)input" Condition="!Exists('$(OutputPath)input')" />
+    <MakeDir Directories="$(OutputPath)output" Condition="!Exists('$(OutputPath)output')" />
+    <Message Text="Directorios 'input' y 'output' asegurados en $(OutputPath)" Importance="high" />
+  </Target>
+
+  <ItemGroup>
+    <Compile Include="..\Core\**\*.cs" />
+    <Compile Include="..\Models\**\*.cs" />
+    <Compile Include="..\Readers\**\*.cs" />
+    <Compile Include="..\Services\**\*.cs" />
+    <Compile Include="..\Converters\**\*.cs" />
+  </ItemGroup>
+
+</Project>
