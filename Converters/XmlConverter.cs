@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
-using ConsoleApp1.Core; // For IConverter interface
+using FileConverterApp.Core; // For IConverter interface
 
-namespace ConsoleApp1.Converters
+namespace FileConverterApp.Converters
 {
     public class XmlConverter : IConverter
     {

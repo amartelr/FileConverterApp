@@ -16,9 +16,9 @@
   </ItemGroup>
 
 <ItemGroup>
-  <None Update="nlog.config">
+  <Content Include="nlog.config">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> <!-- O 'Always' -->
-  </None>
+  </Content>
   <!-- Otros elementos pueden estar aquí -->
 </ItemGroup>
 

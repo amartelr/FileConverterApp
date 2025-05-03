@@ -1,12 +1,12 @@
-﻿using ConsoleApp1.Core;
+﻿using FileConverterApp.Core;
 using System.Text.Json; // Needed for JSON deserialization
-using ConsoleApp1.Models;
-using ConsoleApp1.Services;
-using ConsoleApp1.Converters; // Assuming XmlConverter is here
+using FileConverterApp.Models;
+using FileConverterApp.Services;
+using FileConverterApp.Converters; // Assuming XmlConverter is here
 using Microsoft.Extensions.Configuration;
 using NLog; // Needed for NLog
 
-namespace ConsoleApp1
+namespace FileConverterApp
 {
     class Program
     {

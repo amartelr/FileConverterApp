@@ -1,9 +1,9 @@
-using ConsoleApp1.Core;
-using ConsoleApp1.Readers;
+using FileConverterApp.Core;
+using FileConverterApp.Readers;
 using System;
 using System.IO;
 
-namespace ConsoleApp1.Services
+namespace FileConverterApp.Services
 {
     public class FileReaderFactory
     {

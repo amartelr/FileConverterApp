@@ -1,7 +1,7 @@
 using System.Collections.Generic; // Required for Dictionary
 using System.Text.Json.Serialization; // Required for JsonIgnore
 
-namespace ConsoleApp1.Models
+namespace FileConverterApp.Models
 {
     public class Field
     {

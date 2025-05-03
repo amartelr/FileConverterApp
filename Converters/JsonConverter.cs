@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using ConsoleApp1.Core;
+using FileConverterApp.Core;
 
-namespace ConsoleApp1.Converters
+namespace FileConverterApp.Converters
 {
     public class JsonConverter : IConverter
     {

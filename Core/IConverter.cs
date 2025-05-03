@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ConsoleApp1.Core
+namespace FileConverterApp.Core
 {
     public interface IConverter
     {

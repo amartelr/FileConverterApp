@@ -1,8 +1,8 @@
-using ConsoleApp1.Core;
-using ConsoleApp1.Converters;
+using FileConverterApp.Core;
+using FileConverterApp.Converters;
 using System;
 
-namespace ConsoleApp1.Services
+namespace FileConverterApp.Services
 {
     public class ConverterFactory
     {

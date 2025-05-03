@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ConsoleApp1.Core;
-using ConsoleApp1.Models;
+using FileConverterApp.Core;
+using FileConverterApp.Models;
 
-namespace ConsoleApp1.Readers
+namespace FileConverterApp.Readers
 {
     public class CsvFileReader : IFileReader
     {
