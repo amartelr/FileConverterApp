@@ -1,0 +1,6 @@
+{
+  "Fields": [
+    { "Name": "ID", "Length": 3 },
+    { "Name": "Nombre", "Length": 14 }
+  ]
+}

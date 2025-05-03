@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO; // Added for file operations
-using ConsoleApp1.Core;
+﻿using ConsoleApp1.Core;
 using System.Text.Json; // Needed for JSON deserialization
 using ConsoleApp1.Models;
 using ConsoleApp1.Services;
 using ConsoleApp1.Converters; // Assuming XmlConverter is here
-using ConsoleApp1.Readers; // Assuming FileReaderFactory is here
 
 namespace ConsoleApp1
 {
