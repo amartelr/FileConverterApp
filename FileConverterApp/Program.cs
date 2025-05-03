@@ -3,6 +3,7 @@ using System.Text.Json; // Needed for JSON deserialization
 using ConsoleApp1.Models;
 using ConsoleApp1.Services;
 using ConsoleApp1.Converters; // Assuming XmlConverter is here
+using Microsoft.Extensions.Configuration; // Needed for ConfigurationBuilder
 
 namespace ConsoleApp1
 {
@@ -11,19 +12,28 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             // Determine the base directory (project root)
-            string baseDirectory = AppContext.BaseDirectory;
+            //string baseDirectory = AppContext.BaseDirectory; // This points to bin/Debug...
             // Navigate up to the desired project root if necessary (adjust as needed)
             // For example, if running from bin/Debug/netX.Y
-            baseDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..", "..", ".."));
+            // baseDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..", "..", ".."));
+            // More robust way to get the application's base directory where appsettings.json resides
+            string baseDirectory = Directory.GetCurrentDirectory(); // Usually the project root when running from IDE/CLI
+
+            // --- Load Configuration ---
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(baseDirectory) // Set the path where appsettings.json is located
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // Load the main config file
+                // Add other providers if needed (e.g., environment variables, command line args)
+                .Build();
 
             // Paths relative to the determined base directory
-            string inputDirectory = Path.Combine(baseDirectory, "input");
-            string outputDirectory = Path.Combine(baseDirectory, "output");
-            string cfgDirectory = Path.Combine(baseDirectory, "cfg"); // Define cfg directory path
-            string outputFormat = "xml"; // Hardcoded to XML for now
+            string inputDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:InputDirectoryName") ?? "input");
+            string outputDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:OutputDirectoryName") ?? "output");
+            string cfgDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:ConfigDirectoryName") ?? "cfg");
+            string outputFormat = configuration.GetValue<string>("AppSettings:DefaultOutputFormat") ?? "xml"; // Get format from config
 
             // Ensure output and cfg directories exist
-            Directory.CreateDirectory(outputDirectory); // Ensure output directory exists
+            Directory.CreateDirectory(outputDirectory);
             Directory.CreateDirectory(cfgDirectory); // Ensure cfg directory exists
 
             var fileReaderFactory = new FileReaderFactory();
@@ -37,6 +47,8 @@ namespace ConsoleApp1
                 return;
             }
 
+            Console.WriteLine($"Using Input Directory: {inputDirectory}");
+            Console.WriteLine($"Using Output Directory: {outputDirectory}");
             foreach (var inputFile in Directory.GetFiles(inputDirectory))
             {
                 Console.WriteLine($"Processing file: {inputFile}");
@@ -80,7 +92,7 @@ namespace ConsoleApp1
 
             string jsonConfig = File.ReadAllText(configFilePath);
             // Deserialize JSON config file. Assumes FileConfiguration class exists in Models namespace.
-            FileConfiguration config = JsonSerializer.Deserialize<FileConfiguration>(jsonConfig, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            FileConfiguration? config = JsonSerializer.Deserialize<FileConfiguration>(jsonConfig, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (config == null || config.Fields == null || config.Fields.Count == 0) // Basic validation
             {
@@ -144,7 +156,7 @@ namespace ConsoleApp1
 
              // --- File Writing ---
              // Determine output file path
-             string outputFileName = Path.GetFileNameWithoutExtension(inputFile) + "." + converter.OutputFileExtension; // Access the property instead of calling a method
+             string outputFileName = Path.GetFileNameWithoutExtension(inputFile) + "." + converter.OutputFileExtension;
              string outputFile = Path.Combine(outputDir, outputFileName);
 
              // Write the converted content to the output file
