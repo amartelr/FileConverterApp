@@ -3,12 +3,16 @@ using System.Text.Json; // Needed for JSON deserialization
 using ConsoleApp1.Models;
 using ConsoleApp1.Services;
 using ConsoleApp1.Converters; // Assuming XmlConverter is here
-using Microsoft.Extensions.Configuration; // Needed for ConfigurationBuilder
+using Microsoft.Extensions.Configuration;
+using NLog; // Needed for NLog
 
 namespace ConsoleApp1
 {
     class Program
     {
+        // Create a logger instance for this class
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         static void Main(string[] args)
         {
             // Determine the base directory (project root)
@@ -18,62 +22,82 @@ namespace ConsoleApp1
             // baseDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..", "..", ".."));
             // More robust way to get the application's base directory where appsettings.json resides
             string baseDirectory = Directory.GetCurrentDirectory(); // Usually the project root when running from IDE/CLI
+            LogManager.LoadConfiguration("nlog.config"); // Load NLog configuration
 
-            // --- Load Configuration ---
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(baseDirectory) // Set the path where appsettings.json is located
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // Load the main config file
-                // Add other providers if needed (e.g., environment variables, command line args)
-                .Build();
-
-            // Paths relative to the determined base directory
-            string inputDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:InputDirectoryName") ?? "input");
-            string outputDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:OutputDirectoryName") ?? "output");
-            string cfgDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:ConfigDirectoryName") ?? "cfg");
-            string outputFormat = configuration.GetValue<string>("AppSettings:DefaultOutputFormat") ?? "xml"; // Get format from config
-
-            // Ensure output and cfg directories exist
-            Directory.CreateDirectory(outputDirectory);
-            Directory.CreateDirectory(cfgDirectory); // Ensure cfg directory exists
-
-            var fileReaderFactory = new FileReaderFactory();
-            // Assuming you want XML output based on previous context
-            IConverter converter = new XmlConverter();
-
-            // Process each file in the input directory
-            if (!Directory.Exists(inputDirectory))
+            try
             {
-                Console.WriteLine($"Error: Input directory not found at '{inputDirectory}'");
-                return;
-            }
+                Logger.Info("Application starting...");
 
-            Console.WriteLine($"Using Input Directory: {inputDirectory}");
-            Console.WriteLine($"Using Output Directory: {outputDirectory}");
-            foreach (var inputFile in Directory.GetFiles(inputDirectory))
+                // --- Load Configuration ---
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(baseDirectory) // Set the path where appsettings.json is located
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // Load the main config file
+                    // Add other providers if needed (e.g., environment variables, command line args)
+                    .Build();
+
+                // Paths relative to the determined base directory
+                string inputDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:InputDirectoryName") ?? "input");
+                string outputDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:OutputDirectoryName") ?? "output");
+                string cfgDirectory = Path.Combine(baseDirectory, configuration.GetValue<string>("AppSettings:ConfigDirectoryName") ?? "cfg");
+                string outputFormat = configuration.GetValue<string>("AppSettings:DefaultOutputFormat") ?? "xml"; // Get format from config
+
+                // Ensure output and cfg directories exist
+                Directory.CreateDirectory(outputDirectory);
+                Directory.CreateDirectory(cfgDirectory); // Ensure cfg directory exists
+
+                var fileReaderFactory = new FileReaderFactory();
+                // Assuming you want XML output based on previous context
+                IConverter converter = new XmlConverter(); // Consider making this configurable or using a factory
+
+                // Process each file in the input directory
+                if (!Directory.Exists(inputDirectory))
+                {
+                    Logger.Error($"Input directory not found at '{inputDirectory}'");
+                    return;
+                }
+
+                Logger.Info($"Using Input Directory: {inputDirectory}");
+                Logger.Info($"Using Output Directory: {outputDirectory}");
+                Logger.Info($"Using Config Directory: {cfgDirectory}");
+
+                var inputFiles = Directory.GetFiles(inputDirectory);
+                Logger.Info($"Found {inputFiles.Length} file(s) to process.");
+
+                foreach (var inputFile in inputFiles)
+                {
+                    Logger.Info($"Processing file: {inputFile}");
+                    try
+                    {
+                        // Pass necessary directories and factories to ProcessFile
+                        ProcessFile(inputFile, outputDirectory, cfgDirectory, fileReaderFactory, converter);
+                    }
+                    catch (FileNotFoundException ex) // Specific catch for missing config or lookup file
+                    {
+                        Logger.Error(ex, $"Error for {inputFile}: {ex.Message}"); // Log exception details
+                    }
+                    catch (JsonException ex) // Specific catch for invalid JSON in config or lookup
+                    { // Catch errors during JSON deserialization
+                        Logger.Error(ex, $"Invalid JSON configuration related to {inputFile}: {ex.Message}");
+                    }
+                    catch (Exception ex) // Catch-all for other processing errors
+                    {
+                        Logger.Error(ex, $"An unexpected error occurred while processing {inputFile}: {ex.Message}");
+                        // NLog can be configured to log stack traces automatically
+                    }
+                }
+
+                Logger.Info("Processing complete.");
+            }
+            catch (Exception ex)
             {
-                Console.WriteLine($"Processing file: {inputFile}");
-                try
-                {
-                    // Pass necessary directories and factories to ProcessFile
-                    ProcessFile(inputFile, outputDirectory, cfgDirectory, fileReaderFactory, converter);
-                }
-                catch (FileNotFoundException ex) // Specific catch for missing config or lookup file
-                {
-                     Console.WriteLine($"Error for {inputFile}: {ex.Message}");
-                }
-                catch (JsonException ex) // Specific catch for invalid JSON in config or lookup
-                { // Catch errors during JSON deserialization
-                     Console.WriteLine($"Invalid JSON configuration related to {inputFile}: {ex.Message}");
-                }
-                catch (Exception ex) // Catch-all for other processing errors
-                {
-                    Console.WriteLine($"An unexpected error occurred while processing {inputFile}: {ex.Message}");
-                    // Optional: Log stack trace for debugging
-                    // Console.WriteLine(ex.StackTrace);
-                }
+                // Catch any exception that happens during startup/initialization
+                Logger.Fatal(ex, "Application terminated unexpectedly during setup.");
             }
-
-            Console.WriteLine("Processing complete.");
+            finally
+            {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                LogManager.Shutdown();
+            }
         }
 
         // Updated signature to include cfgDir
@@ -162,7 +186,7 @@ namespace ConsoleApp1
              // Write the converted content to the output file
              File.WriteAllText(outputFile, outputContent);
 
-             Console.WriteLine($"Successfully processed '{inputFile}' and created '{outputFile}'");
+             Logger.Info($"Successfully processed '{inputFile}' and created '{outputFile}'");
         }
     }
 }
