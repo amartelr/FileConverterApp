@@ -21,8 +21,11 @@ namespace FileConverterApp
             // For example, if running from bin/Debug/netX.Y
             // baseDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..", "..", ".."));
             // More robust way to get the application's base directory where appsettings.json resides
-            string baseDirectory = Directory.GetCurrentDirectory(); // Usually the project root when running from IDE/CLI
-            LogManager.LoadConfiguration("nlog.config"); // Load NLog configuration
+            // Use AppContext.BaseDirectory for a more reliable path to the application's root
+            string baseDirectory = AppContext.BaseDirectory;
+            // Construct the full path to nlog.config and load using the recommended method
+            var nlogConfigPath = Path.Combine(baseDirectory, "nlog.config");
+            LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath); // Load NLog configuration
 
             try
             {
