@@ -19,6 +19,9 @@
   <Content Include="nlog.config">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> <!-- O 'Always' -->
   </Content>
+  <Content Include="appsettings.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> <!-- Ensure appsettings is copied -->
+  </Content>
   <!-- Otros elementos pueden estar aquí -->
 </ItemGroup>
 

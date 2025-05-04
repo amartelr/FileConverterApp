@@ -7,3 +7,25 @@
 2025-05-03 09:29:51.0069 Info Logger has been closed down.
 2025-05-03 09:29:51.0076 Info AppDomain Shutting down. LogFactory closing...
 2025-05-03 09:29:51.0086 Info LogFactory has been closed.
+2025-05-04 11:38:46.1662 Info Registered target NLog.Targets.ConsoleTarget(Name=logconsole)
+2025-05-04 11:38:46.2216 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-05-04 11:38:46.2240 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-05-04 11:38:46.2568 Info Validating config: TargetNames=logfile, ConfigItems=25, FilePath=/Users/alfredomartel/Library/CloudStorage/GoogleDrive-alfredo.martel@gmail.com/Mi unidad/code/c#/mac/uno/FileConverterApp/bin/Debug/net9.0/nlog.config
+2025-05-04 11:38:46.2591 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: logconsole
+2025-05-04 11:38:46.2625 Info Configuration initialized.
+2025-05-04 11:38:46.3319 Info Shutdown() called. Logger closing...
+2025-05-04 11:38:46.3319 Info Closing old configuration.
+2025-05-04 11:38:46.3392 Info Logger has been closed down.
+2025-05-04 11:38:46.3392 Info AppDomain Shutting down. LogFactory closing...
+2025-05-04 11:38:46.3405 Info LogFactory has been closed.
+2025-05-04 11:41:13.9966 Info Registered target NLog.Targets.ConsoleTarget(Name=logconsole)
+2025-05-04 11:41:14.0498 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-05-04 11:41:14.0524 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-05-04 11:41:14.0846 Info Validating config: TargetNames=logfile, ConfigItems=25, FilePath=/Users/alfredomartel/Library/CloudStorage/GoogleDrive-alfredo.martel@gmail.com/Mi unidad/code/c#/mac/uno/FileConverterApp/bin/Debug/net9.0/nlog.config
+2025-05-04 11:41:14.0871 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: logconsole
+2025-05-04 11:41:14.0907 Info Configuration initialized.
+2025-05-04 11:41:14.1400 Info Shutdown() called. Logger closing...
+2025-05-04 11:41:14.1400 Info Closing old configuration.
+2025-05-04 11:41:14.1462 Info Logger has been closed down.
+2025-05-04 11:41:14.1477 Info AppDomain Shutting down. LogFactory closing...
+2025-05-04 11:41:14.1486 Info LogFactory has been closed.
