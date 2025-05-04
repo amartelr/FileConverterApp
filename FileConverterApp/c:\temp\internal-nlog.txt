@@ -73,3 +73,14 @@
 2025-05-04 11:59:10.8446 Info Logger has been closed down.
 2025-05-04 11:59:10.8453 Info AppDomain Shutting down. LogFactory closing...
 2025-05-04 11:59:10.8460 Info LogFactory has been closed.
+2025-05-04 12:06:21.0118 Info Registered target NLog.Targets.ConsoleTarget(Name=logconsole)
+2025-05-04 12:06:21.0587 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-05-04 12:06:21.0614 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-05-04 12:06:21.1127 Info Validating config: TargetNames=logfile, ConfigItems=25, FilePath=/Users/alfredomartel/Library/CloudStorage/GoogleDrive-alfredo.martel@gmail.com/Mi unidad/code/c#/mac/uno/FileConverterApp/bin/Debug/net9.0/nlog.config
+2025-05-04 12:06:21.1155 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: logconsole
+2025-05-04 12:06:21.1193 Info Configuration initialized.
+2025-05-04 12:06:21.2604 Info Shutdown() called. Logger closing...
+2025-05-04 12:06:21.2604 Info Closing old configuration.
+2025-05-04 12:06:21.2665 Info Logger has been closed down.
+2025-05-04 12:06:21.2673 Info AppDomain Shutting down. LogFactory closing...
+2025-05-04 12:06:21.2682 Info LogFactory has been closed.
