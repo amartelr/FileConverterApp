@@ -1,4 +1,4 @@
-﻿using FileConverterApp.Core;
+﻿﻿using FileConverterApp.Core;
 using System.Text.Json; // Needed for JSON deserialization
 using FileConverterApp.Models;
 using FileConverterApp.Services;

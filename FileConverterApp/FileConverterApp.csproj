@@ -31,6 +31,12 @@
   </Content>
 </ItemGroup>
 
+<ItemGroup>
+  <Content Include="input\**\*">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
 <Target Name="CreateAppDirectories" AfterTargets="Build">
     <MakeDir Directories="$(OutputPath)input" Condition="!Exists('$(OutputPath)input')" />
     <MakeDir Directories="$(OutputPath)output" Condition="!Exists('$(OutputPath)output')" />

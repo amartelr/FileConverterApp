@@ -1,0 +1,7 @@
+{
+  "Fields": [
+    { "Name": "ID" },
+    { "Name": "Nombre" },
+    { "Name": "*Codigo" }
+  ]
+}
